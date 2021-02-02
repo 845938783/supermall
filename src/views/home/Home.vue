@@ -43,6 +43,7 @@ import BackTop from "components/content/backTop/BackTop.vue";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 import { debounce } from "common/utils";
+import { itemListenerMixin } from "common/mixin";
 
 export default {
   components: {
@@ -56,6 +57,7 @@ export default {
     Scorll,
     BackTop
   },
+  mixins: [itemListenerMixin],
   name: "Home",
   data() {
     return {
@@ -83,7 +85,10 @@ export default {
     this.$refs.scroll.refresh();
   },
   deactivated() {
+    // 1.保存Y值
     this.saveY = this.$refs.scroll.getScrollY();
+    // 2.取消全局事件监听
+    this.$bus.$off("itemImageLoad", this.itemImgListener);
   },
   created() {
     // 1.请求多个数据
@@ -93,14 +98,7 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
-  mounted() {
-    const refresh = debounce(this.$refs.scroll.refresh, 50);
-    // 3. 监听item图片加载完成
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-      // this.$refs && this.$refs.scroll && this.$refs.scroll.refresh();
-    });
-  },
+  mounted() {},
 
   methods: {
     /* 事件监听相关方法

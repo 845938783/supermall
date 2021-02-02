@@ -33,7 +33,7 @@ export default {
       movable: true,
       click: true,
 
-      probeType: this,
+      probeType: this.probeType,
 
       mouseWheel: true,
       pullUpLoad: this.pullUpLoad
