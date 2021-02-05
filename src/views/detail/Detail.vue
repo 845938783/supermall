@@ -7,10 +7,6 @@
       :probe-type="3"
       @scroll="contentScroll"
     >
-      <ul>
-        <li v-for="item in $store.state.cartList">{{ item }}</li>
-      </ul>
-
       <detail-swiper :top-images="topImages" />
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
@@ -21,6 +17,7 @@
     </scorll>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
     <detail-bottom-bar @addCart="addToCart"></detail-bottom-bar>
+    <!-- <toast :message="message" :show="show" /> -->
   </div>
 </template>
 <script>
@@ -35,6 +32,7 @@ import Scorll from "components/common/scorll/Scorll.vue";
 import GoodsList from "components/content/goods/GoodsList.vue";
 import DetailBottomBar from "./childComps/DetailBottomBar.vue";
 import BackTop from "components/content/backTop/BackTop.vue";
+import Toast from "../../components/common/toast/Toast";
 
 import {
   getDetail,
@@ -59,6 +57,7 @@ export default {
     GoodsList,
     DetailBottomBar,
     BackTop
+    // Toast
   },
   mixins: [itemListenerMixin],
   name: "Detail",
@@ -76,6 +75,8 @@ export default {
       getThemeTopY: null,
       currentIndex: 0,
       isShowBackTop: false
+      // message: "123",
+      // show: false
     };
   },
   created() {
@@ -189,7 +190,17 @@ export default {
       product.iid = this.iid;
 
       // 2.将商品添加到购物车中
-      this.$store.commit("addCart", product);
+      // this.$store.commit("addCart", product);
+      this.$store.dispatch("addCart", product).then(res => {
+        // this.show = true;
+        // this.message = res;
+        // setTimeout(() => {
+        //   this.show = false;
+        //   this.message = "";
+        // }, 1500);
+
+        this.$toast.show(res, 2000);
+      });
     }
   }
 };
@@ -207,6 +218,6 @@ export default {
   background-color: #fff;
 }
 .content {
-  height: calc(100% - 93px);
+  height: calc(100% - 44px - 49px);
 }
 </style>

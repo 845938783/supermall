@@ -33,7 +33,8 @@ export default {
 <style scoped>
 .bottom-bar {
   height: 49px;
-  position: relative;
+  width: 100%;
+  position: fixed;
   background: #fff;
   display: flex;
   text-align: center;
